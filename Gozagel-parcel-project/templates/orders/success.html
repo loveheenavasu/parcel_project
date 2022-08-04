@@ -1,0 +1,147 @@
+{% load static %}
+{% load i18n %}
+<html lang="en">
+<head>
+    <style>
+button.continue {
+    padding: 15px;
+    cursor: pointer;
+    background: #9d274e;
+    color: #fff;
+    border-radius: 6px;
+    border: unset;
+    font-size: 16px;
+}
+center.thank {
+    margin: 40px;
+}
+</style>
+</head>
+<body>
+<center class="thank">
+    <p>Thank you for your purchase.</p>
+    <a class="btn dim_button" href="{% url 'HomeView' %}" style="color: #fff;">
+        <button class="continue" type="button">Continue New Purchase</button>
+    </a>
+
+</center>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{%  static 'css/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/style.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/buttons.dataTables.min.css' %}">
+    <style>
+.container.pt-30.btn{
+    position:relative;
+}
+a.btn.dim_button.delete_button {
+    right: -39px;
+}
+ </style>
+</head>
+<body>
+
+
+<div class="container p-30" style="margin-top:5px;">
+        <div class="col-md-12">
+            <center><h1 style="font-weight: bold;">Customer Data</h1></center>
+            <center>
+        </div>
+    </div>
+</div>
+
+<center><div class="container table p-30" style="margin-top:5px;">
+    <div class="row">
+        <div class="col-md-12 main-datatable">
+            <div class="card_body">
+                <div class="overflow-x">
+                    <div id="table_column_filter"></div>
+                    <table style="width:100%;" id="filtertable" class="table cust-datatable dataTable no-footer">
+                        <thead>
+                        <tr>
+                            <th style="min-width:30px;">First name</th>
+                            <th style="min-width:30px;">Last name</th>
+                            <th style="min-width:30px;">Email</th>
+                            <th style="min-width:30px;">Parcel Content</th>
+                            <th style="min-width:30px;">Parcel Value</th>
+                            <th style="min-width:30px;">Sender First Name</th>
+                            <th style="min-width:30px;">Sender last Name</th>
+                            <th style="min-width:30px;">Address </th>
+                            <th style="min-width:30px;">Sender City </th>
+                            <th style="min-width:30px;">Country </th>
+                            <th style="min-width:30px;">Postal Code </th>
+                            <th style="min-width:30px;">Recipient First Name </th>
+                            <th style="min-width:30px;">Recipient Last Name </th>
+                            <th style="min-width:30px;">Recipient Address </th>
+                            <th style="min-width:30px;">Recipient City </th>
+                            <th style="min-width:30px;">Recipient Country </th>
+                            <th style="min-width:30px;">Recipient Postal Code </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for objs in obj %}
+                        <tr>
+                            <td>{{objs.first_name}}</td>
+                            <td>{{objs.last_name}}</td>
+                            <td>{{objs.email}}</td>
+                            <td>{{objs.Parcel_contents}}</td>
+                            <td>{{objs.pracel_value}}</td>
+                            <td>{{objs.sender_first_name}}</td>
+                            <td>{{objs.sender_last_name}}</td>
+                            <td>{{objs.address}}</td>
+                            <td>{{objs.city}}</td>
+                            <td>{{objs.sender_county}}</td>
+                            <td>{{objs.postal_code}}</td>
+                            <td>{{objs.recipient_first_name}}</td>
+                            <td>{{objs.recipient_last_name}}</td>
+                            <td>{{objs.recipient_address}}</td>
+                            <td>{{objs.recipient_city}}</td>
+                            <td>{{objs.recipient_country}}</td>
+                            <td>{{objs.recipient_postal_code}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'js/buttons.html5.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            var table = $('#filtertable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: "csv",
+                    text: "Export CSV",
+                    title: "rss fields data"
+                }]
+            });
+            $("#filtertable_filter").css('display','none');
+            $("#filter_btn").on('click', function(){
+                $("#filtertable_filter input[type='search']").val($("#selectfilter").val()).keyup();
+            });
+
+            $('thead tr th').each(function(key, ele){
+                 $('#table_column_filter').append(`<input class="filter_column" id="filter-column-${key}" type='checkbox' value='${ key }' checked> ${ $(ele).text() }, `)
+            });
+
+            $('.filter_column').click(function(){
+                var column = table.column( this.value );
+                column.visible( ! column.visible() );
+            });
+            $('.filter_column').trigger('click')
+            $(`#filter-column-0, #filter-column-1, #filter-column-2, #filter-column-3, #filter-column-6`).trigger('click')
+        });
+</script>
+</body>
+</html>

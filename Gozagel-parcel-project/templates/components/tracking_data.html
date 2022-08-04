@@ -1,0 +1,178 @@
+{% load static %}
+{% load i18n %}
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/png" href="{% static 'icons/favicon.png' %}" />
+      <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+      <script defer src="https://unpkg.com/alpinejs@3.3.5/dist/cdn.min.js"></script>
+      {# description of the page #}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <meta name="description" content="{% block description %}{% endblock description %}">
+
+      {# title in the browser tab #}
+      <title>{% block head_title %}{% endblock %}</title>
+      <style>[x-cloak] { display: none !important; }
+      .body-content {
+            padding: 60px 0;
+        }
+        td.description {
+        float: right;
+    }
+       .carrier-content tr td {
+            color: #374858;
+             font-weight: bold;
+
+            padding: 12px;
+        }
+
+       .carrier-content {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 5px;
+
+}
+   .carrier-content table{
+   table-layout: fixed;
+   }
+.history-tl-container{
+    font-family: "Roboto",sans-serif;
+  margin:auto;
+  display:block;
+  position:relative;
+}
+.history-tl-container ul.tl{
+    margin:20px 0;
+    padding:0;
+    display:inline-block;
+
+}
+.history-tl-container ul.tl li{
+    list-style: none;
+    margin:auto;
+    margin-left:230px;
+    min-height:50px;
+    /*background: rgba(255,255,0,0.1);*/
+    border-left:1px dashed #86D6FF;
+    padding:0 0 50px 30px;
+    position:relative;
+}
+.history-tl-container ul.tl li:last-child{ border-left:0;}
+.history-tl-container ul.tl li::before{
+    position: absolute;
+    left: -10px;
+    top: -5px;
+    content: " ";
+    border: 8px solid rgba(255, 255, 255, 0.74);
+    border-radius: 500%;
+    background: #258CC7;
+    height: 20px;
+    width: 20px;
+    transition: all 500ms ease-in-out;
+
+}
+.history-tl-container ul.tl li:hover::before{
+    border-color:  #258CC7;
+    transition: all 1000ms ease-in-out;
+}
+ul.tl li .item-title{
+}
+ul.tl li .item-detail{
+    color:rgba(0,0,0,0.5);
+    font-size:14px;
+}
+ul.tl li .timestamp {
+    color: #374858;
+    position: absolute;
+    width: 100px;
+    left: -62%;
+    text-align: left;
+    font-size: 16px;
+    font-weight:bold;
+}
+</style>
+<body>
+      {% include 'components/header.html' %}
+      {% block content %}
+      {% if json_object.tracking.tracking_number %}
+
+      <div class="carrier-content">
+<!--          <div class="timeline"></div>-->
+            <table style="width: 52%;">
+                <ul>
+            <tr>
+                <td>Carrier_name :</td>
+                <td>{{ json_object.tracking.carrier_name }}</td>
+            </tr>
+            <tr>
+                <td>Carrier_id :</td>
+                <td>{{json_object.tracking.carrier_id}}</td>
+            </tr>
+             <tr>
+                <td>Tracking_number:</td>
+                <td>{{ json_object.tracking.tracking_number }}</td>
+            </tr>
+             <tr>
+                <td>Delivered :</td>
+                <td>{{delivered.0}}</td>
+            </tr>
+            <tr>
+                <td>Status :</td>
+                <td>{{status.0}}</td>
+            </tr>
+            {% if json_object.tracking.events %}
+                     </tbody>
+            </table>
+
+                <div class="history-tl-container">
+                    <ul class="tl">
+                        {% for x in  json_object.tracking.events %}
+                          <li class="tl-item" ng-repeat="item in retailer_history">
+                             <div class="timestamp">
+                                {{ x.date }}
+                             </div>
+                              <div class="right_text">
+                                 <div class="item-detail">Description: {{x.description}}</div>
+                                 <div class="item-detail">Location: {{x.location}}</div>
+                                 <div class="item-detail">Code: {{x.code}}</div>
+                                 <div class="item-detail">Time: {{x.time}}</div>
+                              </div>
+                          </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+
+      </div>
+
+      {% elif message %}
+        <h3 align="center" style="color: #FF0000; font-size: 22px; ">{{message}}</h3>
+      {% endif %}
+      {% include 'components/footer.html' %}
+
+  <script>
+    var tokenRequest = false;
+    {% if  isTokenEroor  %}
+        var tokenRequest = confirm("Your token expire. Click ok to regenerate the token.");
+    {% endif %}
+    if(tokenRequest){
+        $.ajax({
+            type: "POST",
+            url: "/api",
+            data: { csrfmiddlewaretoken: "{{ csrf_token }}" },
+            success: function(res){
+                if(res == "True"){
+                    location.reload();
+                }
+            }
+        });
+    }
+  </script>
+
+</body>
+</html>
+{% endblock %}

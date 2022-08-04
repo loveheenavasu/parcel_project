@@ -1,0 +1,36 @@
+{% load static %}
+{% load i18n %}
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/png" href="{% static 'icons/favicon.png' %}" />
+      <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+      <script defer src="https://unpkg.com/alpinejs@3.3.5/dist/cdn.min.js"></script>
+      {# description of the page #}
+      <meta name="description" content="{% block description %}{% endblock description %}">
+      {# title in the browser tab #}
+      <title>{% block head_title %}{% endblock %}</title>
+      <style>[x-cloak] { display: none !important; }
+      .body-content {
+            padding: 60px 0;
+        }
+</style>
+<body>
+  {% include 'components/header.html' %}
+  {% block content %}{% endblock content %}
+<form action="{% url 'tracking_data' %}"  method="POST" style=" padding: 180px 30px 30px 30px ;  text-align: center;">
+  {% csrf_token %}
+  <label for="lname">Tracking Number:</label>
+  <input type="number" name="lname"   value="" style="width: 100%; max-width: 560px; height: 44px;" required >
+  <input type="submit" value="Submit" style="padding: 10px 20px; margin-left: 10px;  background: #9d274e;
+    color: #fff;
+    border-radius: 8px;">
+</form>
+
+
+    {% include 'components/footer.html' %}
+</body>
+</html>
+

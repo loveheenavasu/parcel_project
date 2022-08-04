@@ -1,0 +1,24 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/png" href="{% static 'icons/favicon.png' %}" />
+      <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+      <script defer src="https://unpkg.com/alpinejs@3.3.5/dist/cdn.min.js"></script>
+
+      {# description of the page #}
+      <meta name="description" content="{% block description %}{% endblock description %}">
+      {# title in the browser tab #}
+      <title>{% block head_title %}{% endblock %}</title>
+      <style>[x-cloak] { display: none !important; }</style>
+  </head>
+  <body>
+    {% include 'components/header.html' %}
+    {% block content %}{% endblock content %}
+    {% include 'components/footer.html' %}
+  </body>
+</html>

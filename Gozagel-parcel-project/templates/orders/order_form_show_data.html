@@ -1,0 +1,270 @@
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+body{
+margin: 0;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 0px 15px;
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.logo-box{
+  padding: 20px 0px;
+  text-align: center;
+}
+.title {
+    margin-top: 0;
+}
+
+.contact-info-sec {
+    margin-bottom: 25px;
+}
+
+.box-row .column {
+    margin-bottom: 20px;
+}
+.box-container{
+max-width: 1000px;
+margin: auto;
+padding: 0px 15px;
+}
+.box-container .row .column:nth-of-type(2) {
+    padding-left: 150px;
+}
+.box-container .row .column:nth-of-type(1) {
+    padding-left: 100px;
+}
+.contact-info-sec label {
+    padding-right: 15px;
+    font-weight: 600;
+}
+.contact-info-sec .form-field-gp {
+    margin-bottom: 10px;
+}
+.print-btn-sec{
+    text-align:right;
+    width: 100%;
+    max-width: 620px;
+    margin: 20px auto 0px;
+}
+.print-btn {
+    padding: 8px 25px;
+    font-size: 16px;
+    background: #a62a55;
+    border: 1px solid #a62a55;
+    color: #fff;
+    border-radius: 4px;
+}
+@media print {
+    .print-btn{
+        display: none;
+    }
+}
+</style>
+</head>
+<body>
+<div class="print-btn-sec">
+    <button class="print-btn" onclick="window.print();">Print</button>
+</div>
+<div class="box-container">
+    <table style="width:100%; border:0;border-collapse: collapse;">
+        <tbody>
+
+        <tr>
+            <td style="text-align:center; padding: 20px 0px;">
+                <a href="{% url 'HomeView' %}">
+                    <img class="h-8 w-auto" style="max-width:220px;" src="http://209.97.142.219/ghost_foods/wp-content/uploads/2022/03/gozagel-color.png" alt="gozagel-icon">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width:100%; border:0;border-collapse: collapse;table-layout: fixed; margin-bottom: 20px;">
+                    <tbody>
+                    <tr>
+
+                        <td style="width:20%;"></td>
+                        <td>
+                            <h2 class="title" style="margin-bottom: 15px;font-family: 'Arial'">Contact information</h2>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                            <label for="first-name" style="font-weight: bold; font-family: 'Arial'">First name :</label>
+                            <span class="input-field-data">{{ data.first_name }} </span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="last-name" style="font-weight: bold; font-family: 'Arial'">Last name :</label>
+                                <span class="input-field-data">{{data.last_name}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="email" style="font-weight: bold; font-family: 'Arial'">Email :</label>
+                                <span class="input-field-data">{{data.email}}</span>
+                            </div>
+                        </td>
+
+                        <td style="vertical-align: top;">
+                             <h2 class="title" style="margin-bottom: 15px;font-family: 'Arial'">Parcel information</h2>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="parcel" style="font-weight: bold; font-family: 'Arial'">Parcel contents :</label>
+                                <span class="input-field-data">{{data.Parcel_contents}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="value" style="font-weight: bold; font-family: 'Arial'">Value :</label>
+                                <span class="input-field-data">{{data.pracel_value}}</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width:100%; border:0;border-collapse: collapse;table-layout: fixed;">
+                    <tbody>
+                    <tr>
+                        <td style="width:20%;"></td>
+                        <td>
+                             <h2 class="title" style="margin-bottom: 15px;font-family: 'Arial'">Sender information</h2>
+                              <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="f-name" style="font-weight: bold; font-family: 'Arial'">First name :</label>
+                                <span class="input-field-data">{{data.sender_first_name}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="l-name" style="font-weight: bold; font-family: 'Arial'">Last name :</label>
+                                <span class="input-field-data">{{data.sender_last_name}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="email" style="font-weight: bold; font-family: 'Arial'">Email :</label>
+                                <span class="input-field-data">{{data.sender_mail}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="company" style="font-weight: bold; font-family: 'Arial'">Company (optional) :</label>
+                                <span class="input-field-data">{{data.sender_company}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="vat" style="font-weight: bold; font-family: 'Arial'">VAT Number / TAX ID (optional):</label>
+                                <span class="input-field-data">{{data.sender_vat_number}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="address" style="font-weight: bold; font-family: 'Arial'">Address:</label>
+                                <span class="input-field-data">{{data.address}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="apartment" style="font-weight: bold; font-family: 'Arial'">Apartment, suite, etc. (optional) :</label>
+                                <span class="input-field-data">{{data.sender_apartment}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="city" style="font-weight: bold; font-family: 'Arial'">City:</label>
+                                <span class="input-field-data">{{data.city}}</span>
+                            </div>
+
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="country" style="font-weight: bold; font-family: 'Arial'">Country :</label>
+                                <span class="input-field-data">{{data.sender_county}}</span>
+                            </div>
+
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="province" style="font-weight: bold; font-family: 'Arial'">Province (optional):</label>
+                                <span class="input-field-data">{{data.sender_province}}</span>
+                            </div>
+
+                           <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="postal" style="font-weight: bold; font-family: 'Arial'"> Postal code :</label>
+                                <span class="input-field-data">{{data.postal_code}}</span>
+                            </div>
+                          <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="phone" style="font-weight: bold; font-family: 'Arial'"> Phone (optional) :</label>
+                                <span class="input-field-data">{{data.sender_Phone}}</span>
+                          </div>
+                        </td>
+                        <td>
+                             <h2 class="title" style="margin-bottom: 15px;font-family: 'Arial'">Recipient information</h2>
+
+
+                             <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="r-name" style="font-weight: bold; font-family: 'Arial'">First name :</label>
+                                <span class="input-field-data">{{data.recipient_first_name}}</span>
+                            </div>
+                            <div class="form-field-gp" style="margin-bottom: 10px;">
+                                <label for="r-last" style="font-weight: bold; font-family: 'Arial'">Last name :</label>
+                                <span class="input-field-data">{{data.recipient_last_name}}</span>
+                            </div>
+                              <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="email"  style="font-weight: bold; font-family: 'Arial'">Email (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_email}}</span>
+                              </div>
+                              <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-company"  style="font-weight: bold; font-family: 'Arial'">Company (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_company}}</span>
+                              </div>
+                               <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-vat"  style="font-weight: bold; font-family: 'Arial'">VAT Number / TAX ID (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_vat_number}}</span>
+                                </div>
+                               <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-address"  style="font-weight: bold; font-family: 'Arial'">Address:</label>
+                                    <span class="input-field-data">{{data.recipient_address}}</span>
+                                </div>
+                                <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-apartment"  style="font-weight: bold; font-family: 'Arial'">Apartment, suite, etc. (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_apartment}}</span>
+                                </div>
+                                <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-city"  style="font-weight: bold; font-family: 'Arial'">City:</label>
+                                    <span class="input-field-data">{{data.recipient_city}}</span>
+                                </div>
+                                <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-country"  style="font-weight: bold; font-family: 'Arial'">Country:</label>
+                                    <span class="input-field-data">{{data.recipient_country}}</span>
+                                </div>
+                                <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-province"  style="font-weight: bold; font-family: 'Arial'">Province (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_province}}</span>
+                                </div>
+
+                               <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-postal"  style="font-weight: bold; font-family: 'Arial'">Postal code :</label>
+                                    <span class="input-field-data">{{data.recipient_postal_code}}</span>
+                               </div>
+
+                              <div class="form-field-gp" style="margin-bottom: 10px;">
+                                    <label for="r-phone"  style="font-weight: bold; font-family: 'Arial'">Phone (optional) :</label>
+                                    <span class="input-field-data">{{data.recipient_phone}}</span>
+                              </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;padding-top: 25px;">
+                <a href="{% url 'HomeView' %}">
+                    <img class="h-8 w-auto" style="max-width:220px;" src="http://209.97.142.219/ghost_foods/wp-content/uploads/2022/03/gozagel-color.png" alt="gozagel-icon">
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>
