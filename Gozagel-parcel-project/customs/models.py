@@ -5,11 +5,8 @@ Customs model
 # from pyexpat import model
 # from statistics import mode
 # from email.headerregistry import Address
-from re import T
-from tkinter import CASCADE
 from django.db import models
 from address.models import Address
-from shipments.models import Options
 
 # Create your models here.
 
@@ -19,6 +16,15 @@ from shipments.models import Options
 # class Validation(models.Model):
 #     success = models.BooleanField(default=True)
 #     meta_data = models.ForeignKey(Customs_metadata, on_delete=models.CASCADE)
+
+
+
+
+PAID_BY = (
+    ('SENDER', 'sender'),
+    ('RECIPIENT','recipient'),
+    ('THIRD_PARTY','third_party'),
+)
 
 
 class Commodities(models.Model):
@@ -43,13 +49,20 @@ class Commodities(models.Model):
 #     bill_to = models.ForeignKey(Address, on_delete=models.CASCADE)
 #     object_type = models.CharField(max_length=255)
 #     validation = models.ForeignKey(Validation, on_delete=CASCADE)
-
+class Custom_Options(models.Model):
+    aes = models.CharField(max_length=255)
+    eel_pfc = models.CharField(max_length=255)
+    license_number = models.CharField(max_length=255)
+    certificate_number = models.CharField(max_length=255)
+    nip_number = models.CharField(max_length=255)
+    eori_number = models.CharField(max_length=255)
+    vat_registration_number = models.CharField(max_length=255)
 
 class Duty(models.Model):
     """
     Duty model
     """
-    paid_by = models.CharField(max_length=50, null=True, blank=True) # TODO: make it option field
+    paid_by = models.CharField(max_length=50,choices=PAID_BY,default="sender") # TODO: make it option field
     currency = models.CharField(max_length=3, null=True, blank=True)
     declared_value = models.IntegerField(null=True, blank=True)
     account_number = models.CharField(max_length=250, null=True, blank=True)
@@ -70,4 +83,4 @@ class Custom(models.Model):
     commercial_invoice = models.BooleanField(null=True, blank=True)
     certify = models.BooleanField(null=True, blank=True)
     signer = models.CharField(max_length=50, null=True, blank=True)
-    options = models.ForeignKey(Options, on_delete=models.CASCADE)
+    options = models.ForeignKey(Custom_Options, on_delete=models.CASCADE)

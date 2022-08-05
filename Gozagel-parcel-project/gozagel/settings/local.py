@@ -12,10 +12,21 @@ ALLOWED_HOSTS = [
 DEBUG = True
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'parcel_project', 
+        'USER': 'postgres', 
+        'PASSWORD': 'z0987',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
