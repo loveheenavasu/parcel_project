@@ -20,6 +20,7 @@ class Items(models.Model):
     """
     Models to create the Items in the Parcel API
     """
+    items_id = models.CharField(max_length=255, null=True, blank=True)
     weight = models.IntegerField()
     weight_unit = models.CharField(max_length=2)
     description = models.CharField(max_length=255, null=True, blank=True)
@@ -37,6 +38,7 @@ class Parcel(models.Model):
     """
     model to create the PARCEL
     """
+    parcel_id = models.CharField(max_length=255, null=True, blank=True)
     weight = models.IntegerField(default=0)
     width = models.IntegerField(default=0)
     height = models.IntegerField(default=0)

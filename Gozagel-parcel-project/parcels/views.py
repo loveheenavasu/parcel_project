@@ -5,11 +5,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD
-from parcels.serializers import *
-from parcels import models
-
-
+from core.views import generate_token, API_BASE_URL,PARCEL_ENDPOINT, USERNAME, PASSWORD
+from parcels.serializers import ParcelSerializer, ItemsSerializer
+from parcels.models import Parcel
+import json
 
 
 def custom_response(status, data=[], message=""):
@@ -58,45 +57,43 @@ def custom_response(status, data=[], message=""):
 
 
 def parcel_post(request):
-    token = generate_token("dev@example.com", "testdevex")
-    hed = {"Authorization": f"Bearer {token.get('access')}"}
-    api = f"{API_BASE_URL}{ADDRESS_ENDPOINT}"
+    token = generate_token(USERNAME, PASSWORD)
+    header = {"Authorization": f"Bearer {token.get('access')}"}
+    api = f"{API_BASE_URL}{PARCEL_ENDPOINT}"
     data = {
-  "weight": 0,
-  "width": 0,
-  "height": 0,
-  "length": 0,
-  "packaging_type": "string",
-  "package_preset": "string",
-  "description": "string",
-  "content": "string",
-  "is_document": False,
-  "weight_unit": "KG",
-  "dimension_unit": "CM",
-  "items": [
-    {
-      "weight": 0,
-      "weight_unit": "KG",
-      "description": "string",
-      "quantity": 1,
-      "sku": "string",
-      "value_amount": 0,
-      "value_currency": "str",
-      "origin_country": "str",
-      "parent_id": "string",
-      "metadata": {}
-    }
-  ],
-  "reference_number": "string"
-}
-    req = requests.get(api,headers=hed)
+          "weight":request.data.get('weight'),
+          "width": request.data.get('width'),
+          "height": request.data.get('height'),
+          "length": request.data.get('length'),
+          "packaging_type": request.data.get('packaging_type'),
+          "package_preset": request.data.get('package_preset'),
+          "description": request.data.get('description'),
+          "content": request.data.get('content'),
+          "quantity": request.data.get('quantity'),
+          "is_document": request.data.get('is_document'),
+          "weight_unit":request.data.get('weight_unit'),
+          "dimension_unit": request.data.get('dimension_unit'),
+          "items": [
+                        {
+                            "weight": request.data.get('weight'),
+                            "weight_unit": request.data.get('weight_unit'),
+                            "description": request.data.get('description'),
+                            "quantity": request.data.get('quantity'),
+                            "sku": request.data.get('sku'),
+                            "value_amount": request.data.get('value_amount'),
+                            "value_currency":request.data.get('value_currency'),
+                            "origin_country": request.data.get('origin_country'),
+                            "parent_id": request.data.get('parent_id'),
+                        }
+                    ],
+        "reference_number": request.data.get('reference_number')
+    }   
+    req = requests.post(api,json=data,headers=header)
     data = req.json()
-    print(data)
     return data
 
 
-   
-class ParcelViewSet(viewsets.ModelViewSet):
+class ParcelViewSet(ModelViewSet):
     queryset = Parcel.objects.all()
     serializer_class = ParcelSerializer
 
@@ -115,12 +112,17 @@ class ParcelViewSet(viewsets.ModelViewSet):
         data, context = [], {}
         try:
             data = parcel_post(request)
-            serializer = ParcelSerializer(data=data)
-
+            parcel_data = parcel_post(request)
+            parcel_items_data = parcel_data.pop('items')
+            item_serial = ItemsSerializer(data=parcel_items_data)
+            if item_serial.is_valid():
+                self.perform_create(item_serial)
+                print(item_serial.data, item_serial.data.get('id'))
+            #parcel_item_id = parcel_items_data[0].get('id')
+            # parcel_data['items'] = Parcel.objects.get(id=data["id"])
+            serializer = ParcelSerializer(data=parcel_data)
             if serializer.is_valid():
                 self.perform_create(serializer)
-                # user_obj = Address.objects.get(id=serializer.data["id"])
-                # serializer = AddressSerializer(user_obj)
                 context = custom_response(status.HTTP_201_CREATED, serializer.data, "Created Successfully.")
             else:
                 context = custom_response(status.HTTP_400_BAD_REQUEST, serializer.errors, "Unsuccessful.")

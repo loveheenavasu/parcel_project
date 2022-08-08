@@ -31,6 +31,7 @@ class Commodities(models.Model):
     """
     Commodities model
     """
+    commodities_id = models.CharField(max_length=255, null=True, blank=True)
     weight = models.IntegerField()
     weight_unit = models.CharField(max_length=2)
     description = models.CharField(max_length=250, null=True, blank=True)
@@ -50,6 +51,7 @@ class Commodities(models.Model):
 #     object_type = models.CharField(max_length=255)
 #     validation = models.ForeignKey(Validation, on_delete=CASCADE)
 class Custom_Options(models.Model):
+
     aes = models.CharField(max_length=255)
     eel_pfc = models.CharField(max_length=255)
     license_number = models.CharField(max_length=255)
@@ -62,6 +64,7 @@ class Duty(models.Model):
     """
     Duty model
     """
+    duty_id = models.CharField(max_length=255, null=True, blank=True)
     paid_by = models.CharField(max_length=50,choices=PAID_BY,default="sender") # TODO: make it option field
     currency = models.CharField(max_length=3, null=True, blank=True)
     declared_value = models.IntegerField(null=True, blank=True)
@@ -73,6 +76,7 @@ class Custom(models.Model):
     """
     Custom model to store the customs data
     """
+    Custom_id = models.CharField(max_length=255, null=True)
     commodities = models.ForeignKey(Commodities, on_delete=models.CASCADE)
     duty = models.ForeignKey(Duty, on_delete=models.CASCADE)
     content_type = models.CharField(max_length=250, null=True, blank=True) #TODO: make it option field

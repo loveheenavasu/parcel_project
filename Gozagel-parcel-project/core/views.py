@@ -1,16 +1,12 @@
-from urllib import request
+import requests
 from django.views.generic import TemplateView    
 
 
-import requests
-
-
-API_BASE_URL = 'http://51.159.178.154:5002' 
-ADDRESS_ENDPOINT = "/v1/addresses"
-
 USERNAME = 'dev@example.com'
 PASSWORD = 'testdevex'
-
+API_BASE_URL = 'http://51.159.178.154:5002' 
+ADDRESS_ENDPOINT = "/v1/addresses"
+PARCEL_ENDPOINT = '/v1/parcels'
 
 
 def generate_token(email, password): 
@@ -25,7 +21,7 @@ def generate_token(email, password):
     token=req.json()
     return token
 
-generate_token("dev@example.com", "testdevex")
+# generate_token("dev@example.com", "testdevex")
 
 
 class HomeView(TemplateView):
