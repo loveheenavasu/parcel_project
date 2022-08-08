@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT
+from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD
 from address.serializers import *
 
 
@@ -16,7 +16,7 @@ def custom_response(status, data=[], message=""):
         context = {
             "status": status,
             "message": message,
-            "data": data
+            "data": data    
         }
     elif status == 400 or status == 202:
         error_list = list()
@@ -54,29 +54,30 @@ def custom_response(status, data=[], message=""):
 
 def address_post(request):
     token = generate_token("dev@example.com", "testdevex")
-    # aa='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5Njk0NjMwLCJpYXQiOjE2NTk2OTM3MzAsImp0aSI6ImNlYjQ3YTc3MWIzZjRiMTk4YTM1YWQxZTU4ODEzYzUzIiwidXNlcl9pZCI6Mn0.vHJs0ZvCYc7rpPGrRuuKuzN4NEiAcbsli0oWzAXGz_4'
     hed = {"Authorization": f"Bearer {token.get('access')}"}
     api = f"{API_BASE_URL}{ADDRESS_ENDPOINT}"
-    # data= {
-    #     "postal_code": "string",
-    #     "city": "string",
-    #     "federal_tax_id": "string",
-    #     "state_tax_id": "string",
-    #     "person_name": "string",
-    #     "company_name": "string",
-    #     "country_code": "AD",
-    #     "email": "string",
-    #     "phone_number": "0987654321",
-    #     "state_code": "string",
-    #     "suburb": "string",
-    #     "residential": False,
-    #     "address_line1": "string",
-    #     "address_line2": "string",
-    #     "validate_location": False,
-    # }
+    data= {
+        "postal_code": request.data.get('postal_code'),
+        "city": request.data.get('city'),
+        "federal_tax_id": request.data.get('federal_tax_id'),
+        "state_tax_id": request.data.get('state_tax_id'),
+        "person_name": request.data.get('person_name'),
+        "company_name": request.data.get('company_name'),
+        "country_code": request.data.get('country_code'),
+        "email": request.data.get('email'),
+        "phone_number": request.data.get('phone_number'),
+        "state_code": request.data.get('state_code'),
+        "suburb": request.data.get('suburb'),
+        "residential": request.data.get('residential'),
+        "address_line1": request.data.get('address_line1'),
+        "address_line2": request.data.get('address_line2'),
+        "validate_location":request.data.get('validate_location'),
+    }
     
-    req=requests.post(api,json=request.data,headers=hed)
-    data=req.json()
+    req = requests.post(api,json=data,headers=hed)
+    data = req.json()
+    data['address_id'] = data.get('id')
+    print(data)
     return data
    
 class AddressViewSet(viewsets.ModelViewSet):
@@ -93,7 +94,8 @@ class AddressViewSet(viewsets.ModelViewSet):
             context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
         return JsonResponse(context, safe=False, status=context.get("status"))
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs): 
+        # TODO: Make it unique
         data, context = [], {}
         try:
             data = address_post(request)

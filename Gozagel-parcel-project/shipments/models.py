@@ -21,10 +21,10 @@ class selected_rate(models.Model):
     
 
 class Shipments(models.Model):
-    shipment_id = models.CharField(unique=True, max_length=100)
+    # shipment_id = models.CharField(unique=True, max_length=100)
     shpment_reference = models.CharField(unique=True, max_length=100)
     user = models.OneToOneField(get_user_model(), on_delete=RESTRICT)
-    shipper = models.ForeignKey(Address,related_name='shipper', on_delete=models.CASCADE)
+    # shipper = models.ForeignKey(Address,related_name='shipper', on_delete=models.CASCADE)
     recipient = models.ForeignKey(Address,related_name='recipient', on_delete=models.CASCADE)
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
@@ -32,7 +32,7 @@ class Shipments(models.Model):
     label_type = models.CharField(max_length=50, default="PDF")
     service = models.CharField(max_length=50)
     services = ArrayField(models.CharField(max_length=10, blank=True),)
-    carrier_ids = ArrayField(models.CharField(max_length=10, blank=True),)
+    # carrier_ids = ArrayField(models.CharField(max_length=10, blank=True),)
 
 
 
