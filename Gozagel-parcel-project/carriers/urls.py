@@ -1,15 +1,17 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import *
-from address import views
+from carriers.views import *
+from carriers import views
 
 router = DefaultRouter()
 
 
-router.register(r'address', AddressViewSet, basename='address'),
+router.register(r'carrier', CarrierViewSet, basename='carrier'),
 
 urlpatterns = [
+     path('carrier_get',views.carrier_get ,name="carrier_get"),
      path('', include(router.urls)),
-     path('address_post',views.address_post,name="address_post"),
-
 ]
+
+

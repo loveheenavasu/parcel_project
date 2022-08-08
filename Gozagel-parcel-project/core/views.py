@@ -8,6 +8,11 @@ import requests
 API_BASE_URL = 'http://51.159.178.154:5002' 
 ADDRESS_ENDPOINT = "/v1/addresses"
 
+USERNAME = 'dev@example.com'
+PASSWORD = 'testdevex'
+
+
+
 def generate_token(email, password): 
     """generate token to access the API's""" 
     endpoint='/api/token'

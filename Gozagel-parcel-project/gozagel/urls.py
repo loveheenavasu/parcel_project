@@ -26,4 +26,6 @@ urlpatterns = [
     path("", include("address.urls")),
     path("", include("customs.urls")),
     path("", include("parcels.urls")),
+    path("", include("shipments.urls")),
+    path("", include("carriers.urls")),
 ]

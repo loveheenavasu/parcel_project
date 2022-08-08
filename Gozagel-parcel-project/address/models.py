@@ -1,9 +1,11 @@
 from tkinter.tix import Balloon
+from turtle import back
 from django.db import models
 
 # Create your models here.
 
 class Address(models.Model):
+    address_id = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=10, null=True,blank=True)
     city = models.CharField(max_length=50, null=True,blank=True)
     federal_tax_id = models.CharField(max_length=50, null=True,blank=True)
@@ -11,7 +13,7 @@ class Address(models.Model):
     person_name = models.CharField(max_length=50, null=True,blank=True)
     company_name = models.CharField(max_length=50, null=True,blank=True)
     country_code = models.CharField(max_length=2, default="AD")
-    email = models.CharField(max_length=255, null=True,blank=True)
+    email = models.CharField(max_length=255, null=True,blank=True, unique=True)
     phone_number = models.CharField(max_length=50, null=True,blank=True)
     state_code = models.CharField(max_length=20, null=True,blank=True)
     suburb = models.CharField(max_length=255, null=True,blank=True)
