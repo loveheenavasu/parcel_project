@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD
-from address.serializers import *
+from .serializers import *
 
 
 def custom_response(status, data=[], message=""):
@@ -79,7 +79,8 @@ def address_post(request):
     data['address_id'] = data.get('id')
     print(data)
     return data
-   
+
+
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer

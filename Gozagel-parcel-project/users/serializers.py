@@ -5,5 +5,5 @@ from rest_framework import serializers
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Contacts
-        fields="__all__"
+        model = Contacts
+        fields = "__all__"

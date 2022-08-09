@@ -24,6 +24,50 @@ def generate_token(email, password):
 # generate_token("dev@example.com", "testdevex")
 
 
+def custom_response(status, data=[], message=""):
+    """return custom response for all the APIs"""
+    if status == 404:
+        if not message:
+            message = "Data not found."
+        context = {
+            "status": status,
+            "message": message,
+            "data": data
+        }
+    elif status == 400 or status == 202:
+        error_list = list()
+        if isinstance(data, str):
+            message = data
+            context = {
+                "status": status,
+                "message": message,
+                "data": []
+            }
+        else:
+            for i, j in data.items():
+                j = "".join(j)
+                message = f"{i}: {j}"
+                error_list.append(message)
+
+            context = {
+                "status": status,
+                "message": ", ".join(error_list),
+                "data": []
+            }
+    elif status == 409:
+        context = {
+            "status": status,
+            "message": "Already exists",
+            "data": []
+        }
+    else:
+        context = {
+            "status": status,
+            "message": message,
+            "data": data
+        }
+    return context
+
 class HomeView(TemplateView):
     template_name = "index.html"
 

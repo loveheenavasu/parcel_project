@@ -22,7 +22,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'parcel_project', 
+        'NAME': 'parcel_new',
         'USER': 'postgres', 
         'PASSWORD': 'z0987',
         'HOST': 'localhost', 
