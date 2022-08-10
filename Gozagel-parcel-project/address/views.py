@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD
+from core.views import generate_token, API_BASE_URL, ADDRESS_ENDPOINT, USERNAME, PASSWORD
 from .serializers import *
 
 
@@ -94,6 +94,8 @@ class AddressViewSet(viewsets.ModelViewSet):
         except Exception as error:
             context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
         return JsonResponse(context, safe=False, status=context.get("status"))
+
+        
 
     def create(self, request, *args, **kwargs): 
         # TODO: Make it unique
