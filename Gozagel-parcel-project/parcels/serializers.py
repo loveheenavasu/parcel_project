@@ -3,13 +3,19 @@
 # from django.urls import path, include
 # from django.contrib.auth.models import User
 from dataclasses import field
+from xml.parsers.expat import model
 from rest_framework import serializers, viewsets
-from .models import Parcel, Items
+from .models import Parcel, Items, Items_metadata
 
 
 class ItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Items
+        fields = '__all__'
+
+class metaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Items_metadata
         fields = '__all__'
 
 
