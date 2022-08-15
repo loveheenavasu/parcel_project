@@ -56,23 +56,23 @@ def carrier_get(request):
     token = generate_token("dev@example.com", "testdevex")
     hed = {"Authorization": f"Bearer {token.get('access')}"}
     api = f"{API_BASE_URL}{ADDRESS_ENDPOINT}"
-    # data= {
-    #     "postal_code": request.data.get('postal_code'),
-    #     "city": request.data.get('city'),
-    #     "federal_tax_id": request.data.get('federal_tax_id'),
-    #     "state_tax_id": request.data.get('state_tax_id'),
-    #     "person_name": request.data.get('person_name'),
-    #     "company_name": request.data.get('company_name'),
-    #     "country_code": request.data.get('country_code'),
-    #     "email": request.data.get('email'),
-    #     "phone_number": request.data.get('phone_number'),
-    #     "state_code": request.data.get('state_code'),
-    #     "suburb": request.data.get('suburb'),
-    #     "residential": request.data.get('residential'),
-    #     "address_line1": request.data.get('address_line1'),
-    #     "address_line2": request.data.get('address_line2'),
-    #     "validate_location":request.data.get('validate_location'),
-    # }
+    data= {
+        "postal_code": request.data.get('postal_code'),
+        "city": request.data.get('city'),
+        "federal_tax_id": request.data.get('federal_tax_id'),
+        "state_tax_id": request.data.get('state_tax_id'),
+        "person_name": request.data.get('person_name'),
+        "company_name": request.data.get('company_name'),
+        "country_code": request.data.get('country_code'),
+        "email": request.data.get('email'),
+        "phone_number": request.data.get('phone_number'),
+        "state_code": request.data.get('state_code'),
+        "suburb": request.data.get('suburb'),
+        "residential": request.data.get('residential'),
+        "address_line1": request.data.get('address_line1'),
+        "address_line2": request.data.get('address_line2'),
+        "validate_location":request.data.get('validate_location'),
+    }
     
     req = requests.get(api,headers=hed)
     data = req.json()

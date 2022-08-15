@@ -7,6 +7,7 @@ PASSWORD = 'testdevex'
 API_BASE_URL = 'http://51.159.178.154:5002' 
 ADDRESS_ENDPOINT = "/v1/addresses"
 PARCEL_ENDPOINT = '/v1/parcels'
+SHIPMENT_ENDPOINT = "/v1/shipments"
 
 
 def generate_token(email, password): 

@@ -7,8 +7,6 @@ from django.db.models.deletion import RESTRICT
 from django.contrib.auth import get_user_model
 
 
-
-
 class selected_rate(models.Model):
     object_type = models.CharField(max_length=200)
     carrier_name = models.CharField(max_length=200)
@@ -19,7 +17,6 @@ class selected_rate(models.Model):
     transit_days = models.CharField(max_length=20)
     extra_charges = models.CharField(max_length=50)
     
-
 class Shipments(models.Model):
     # shipment_id = models.CharField(unique=True, max_length=100)
     shpment_reference = models.CharField(unique=True, max_length=100)
