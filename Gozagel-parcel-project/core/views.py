@@ -8,6 +8,7 @@ API_BASE_URL = 'http://51.159.178.154:5002'
 ADDRESS_ENDPOINT = "/v1/addresses"
 PARCEL_ENDPOINT = '/v1/parcels'
 SHIPMENT_ENDPOINT = "/v1/shipments"
+SHIPMENTLABEL_ENDPOINT = "/v1/shipments/shp_596d24c8427e45388b1e3e700112df16/purchase"
 
 
 def generate_token(email, password): 

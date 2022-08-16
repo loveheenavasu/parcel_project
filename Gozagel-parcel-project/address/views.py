@@ -5,74 +5,31 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from core.views import generate_token, API_BASE_URL, ADDRESS_ENDPOINT, USERNAME, PASSWORD
+from core.views import generate_token, API_BASE_URL, ADDRESS_ENDPOINT, USERNAME, PASSWORD, custom_response
 from .serializers import *
-
-
-def custom_response(status, data=[], message=""):
-    if status == 404:
-        if not message:
-            message = "Data not found."
-        context = {
-            "status": status,
-            "message": message,
-            "data": data    
-        }
-    elif status == 400 or status == 202:
-        error_list = list()
-        if isinstance(data, str):
-            message = data
-            context = {
-                "status": status,
-                "message": message,
-                "data": []
-            }
-        else:
-            for i, j in data.items():
-                j = "".join(j)
-                message = f"{i}: {j}"
-                error_list.append(message)
-
-            context = {
-                "status": status,
-                "message": ", ".join(error_list),
-                "data": []
-            }
-    elif status == 409:
-        context = {
-            "status": status,
-            "message": "Already exists",
-            "data": []
-        }
-    else:
-        context = {
-            "status": status,
-            "message": message,
-            "data": data
-        }
-    return context
+1
 
 def address_post(request):
     token = generate_token("dev@example.com", "testdevex")
     hed = {"Authorization": f"Bearer {token.get('access')}"}
     api = f"{API_BASE_URL}{ADDRESS_ENDPOINT}"
     data= {
-        "postal_code": request.data.get('postal_code'),
-        "city": request.data.get('city'),
-        "federal_tax_id": request.data.get('federal_tax_id'),
-        "state_tax_id": request.data.get('state_tax_id'),
-        "person_name": request.data.get('person_name'),
-        "company_name": request.data.get('company_name'),
-        "country_code": request.data.get('country_code'),
-        "email": request.data.get('email'),
-        "phone_number": request.data.get('phone_number'),
-        "state_code": request.data.get('state_code'),
-        "suburb": request.data.get('suburb'),
-        "residential": request.data.get('residential'),
-        "address_line1": request.data.get('address_line1'),
-        "address_line2": request.data.get('address_line2'),
-        "validate_location":request.data.get('validate_location'),
-    }
+    "postal_code": "tr567",
+    "city": "Mohali",
+    "federal_tax_id": "34567890",
+    "state_tax_id": "3456789",
+    "person_name": "oiuytfghj",
+    "company_name": "xyz",
+    "country_code": "EG",
+    "email": "xctfyvgbhinjmkonjohbvg@gmail.com",
+    "phone_number": "798765432",
+    "state_code": "987vbn",
+    "suburb": None,
+    "residential": False,
+    "address_line1": "abc",
+    "address_line2": "abc",
+    "validate_location": False
+}
     
     req = requests.post(api,json=data,headers=hed)
     data = req.json()
