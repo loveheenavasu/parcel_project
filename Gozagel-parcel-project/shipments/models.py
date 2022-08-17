@@ -31,7 +31,6 @@ class Shipments(models.Model):
     items_id = models.CharField(max_length=255, null=True, blank=True)
     customs_id = models.CharField(max_length=255, null=True, blank=True)
     commodities_id = models.CharField(max_length=255, null=True, blank=True)
-    address_id = models.CharField(max_length=255 , null=True, blank=True)
     # parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, null=True, blank=True)
     # item = models.ForeignKey(Items, on_delete=models.CASCADE, null=True, blank=True)
     # reference = models.CharField(max_length=100, null=True, blank=True)

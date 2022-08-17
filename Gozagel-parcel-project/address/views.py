@@ -15,13 +15,13 @@ def address_post(request):
     api = f"{API_BASE_URL}{ADDRESS_ENDPOINT}"
     data= {
     "postal_code": "tr567",
-    "city": "Mohali",
+    "city": "palampur",
     "federal_tax_id": "34567890",
     "state_tax_id": "3456789",
     "person_name": "oiuytfghj",
     "company_name": "xyz",
     "country_code": "EG",
-    "email": "xctfyvgbhinjmkonjohbvg@gmail.com",
+    "email": "xctfyvgb98765enjrewohbvg@gmail.com",
     "phone_number": "798765432",
     "state_code": "987vbn",
     "suburb": None,

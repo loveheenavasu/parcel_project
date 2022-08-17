@@ -103,7 +103,12 @@ def shipment_post(request):
 }
     req = requests.post(api,json=data,headers=hed)
     data = req.json()
-    data['address_id'] = data.get('id')
+    data['shipment_id'] = data.get('id')
+    data['shipper_id'] = data.get('shipper.id')
+    data['parcel_id'] = data.get('recipient.id')
+    data['items_id'] = data.get('items.id')
+    data['customs_id'] = data.get('customs.id')
+    data['commodities_id'] = data.get('commodities.id')
     print(data)
     return data
 
@@ -206,14 +211,14 @@ class ShipmentsViewSet(viewsets.ModelViewSet):
 
 
 
-
+    
 #*********************************************************SHIPMENT LABEL STARTS HERE******************************************************
 
 def shipmentlabel_post(request):    
     token = generate_token(USERNAME, PASSWORD)
     hed = {"Authorization": f"Bearer {token.get('access')}"}
-    api = f"{API_BASE_URL}{SHIPMENTLABEL_ENDPOINT}"
-    data= {
+    api = f"{API_BASE_URL}{SHIPMENTLABEL_ENDPOINT}" 
+    data= {     
   "selected_rate_id": "rat_2501e23953634f1bb9e0b223124827b3"
 }
     req = requests.post(api,json=data,headers=hed)
@@ -316,4 +321,4 @@ class ShipmentslabelViewSet(viewsets.ModelViewSet):
                 context = custom_response(status.HTTP_404_NOT_FOUND)
         except Exception as error:
             context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
-        return JsonResponse(context, status=context.get('status'), safe=False)
+        return JsonResponse(context, status=context.get('status'), safe=False)  

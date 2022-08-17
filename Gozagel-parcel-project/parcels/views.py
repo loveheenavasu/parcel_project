@@ -17,17 +17,31 @@ def parcel_post(request):
     hed = {"Authorization": f"Bearer {token.get('access')}"}
     api = f"{API_BASE_URL}{PARCEL_ENDPOINT}"
     data = {
-            "weight":request.data.get('weight'),
-            "width": request.data.get('width'),
-            "height": request.data.get('height'),
-            "length": request.data.get('length'),
-            "packaging_type":request.data.get('packaging_type'),
-            "package_preset":request.data.get('package_preset'),
-            "description":request.data.get('description'),
-            "content":request.data.get('content'),
-            "is_document": request.data.get('is_document'),
-            "weight_unit":request.data.get('weight_unit'),
-            "dimension_unit":request.data.get('dimension_unit')
+    "weight": 1,
+    "width": 1,
+    "height": 1,
+    "length": 1,
+    "packaging_type": "small_box",
+    "package_preset": "something",
+    "description": "birth card",
+    "content": "card",
+    "is_document": True,
+    "weight_unit": "KG",
+    "dimension_unit": "CM",
+    "items": [
+        {
+            "weight": 1,
+            "weight_unit": "KG",
+            "description": "nothing to write right now",
+            "quantity": 1,
+            "sku": "string",
+            "value_amount": 0,
+            "value_currency": "INR",
+            "origin_country": "IND",
+            "metadata": {}
+        }
+    ],
+    "reference_number": "123456789"
 }   
     
     req = requests.post(api,json=data,headers=hed)
@@ -35,6 +49,180 @@ def parcel_post(request):
     data['parcel_id'] = data.get('id')
     print(data)
     return data
+    
+
+class ParcelViewSet(viewsets.ModelViewSet):
+    queryset = Parcel.objects.all()
+    serializer_class = ParcelSerializer
+    def list(self, request, *args, **kwargs):
+        data, context = [], {}
+        try:
+            queryset = Parcel.objects.all()
+            serializer = ParcelSerializer(queryset, many=True)
+            context = custom_response(status.HTTP_200_OK, serializer.data, "Fetched Successfully.")
+        except Exception as error:
+            context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
+        return JsonResponse(context, safe=False, status=context.get("status"))
+
+
+    def create(self, request, *args, **kwargs): 
+        # TODO: Make it unique
+        data, context = [], {}
+        try:
+            data = parcel_post(request)
+            serializer = ParcelSerializer(data=data)
+            context = custom_response(status.HTTP_201_CREATED, data, "Created Successfully.")
+
+            # if serializer.is_valid():
+            #     self.perform_create(serializer)
+            #     # user_obj = Address.objects.get(id=serializer.data["id"])
+            #     # serializer = AddressSerializer(user_obj)
+            #     context = custom_response(status.HTTP_201_CREATED, serializer.data, "Created Successfully.")
+            # else:
+            #     context = custom_response(status.HTTP_400_BAD_REQUEST, serializer.errors, "Unsuccessful.")
+        except Exception as error:
+            context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
+        return JsonResponse(context, safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class ParcelViewSet(viewsets.ModelViewSet):
@@ -46,7 +234,7 @@ class ParcelViewSet(viewsets.ModelViewSet):
         try:
             queryset = Parcel.objects.all()
             serializer = ParcelSerializer(queryset, many=True)
-            context = custom_response(status.HTTP_200_OK, serializer.data, "Fetched Successfully.")
+            # context = custom_response(status.HTTP_200_OK, serializer.data, "Fetched Successfully.")
         except Exception as error:
             context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
         return JsonResponse(context, safe=False, status=context.get("status"))
@@ -60,13 +248,13 @@ class ParcelViewSet(viewsets.ModelViewSet):
             data = parcel_post(request)
             serializer = ParcelSerializer(data=data)
 
-            if serializer.is_valid():
-                self.perform_create(serializer)
-                # user_obj = Address.objects.get(id=serializer.data["id"])
-                # serializer = AddressSerializer(user_obj)
-                context = custom_response(status.HTTP_201_CREATED, serializer.data, "Created Successfully.")
-            else:
-                context = custom_response(status.HTTP_400_BAD_REQUEST, serializer.errors, "Unsuccessful.")
+            # if serializer.is_valid():
+            #     self.perform_create(serializer)
+            #     # user_obj = Address.objects.get(id=serializer.data["id"])
+            #     # serializer = AddressSerializer(user_obj)
+            #     context = custom_response(status.HTTP_201_CREATED, serializer.data, "Created Successfully.")
+            # else:
+            #     context = custom_response(status.HTTP_400_BAD_REQUEST, serializer.errors, "Unsuccessful.")
         except Exception as error:
             context = custom_response(status.HTTP_400_BAD_REQUEST, data=str(error))
         return JsonResponse(context, safe=False)

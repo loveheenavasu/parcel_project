@@ -8,60 +8,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD
+from core.views import generate_token, API_BASE_URL,ADDRESS_ENDPOINT, USERNAME, PASSWORD,custom_response
 from customs.serializers import *
 
 
 
-
-def custom_response(status, data=[], message=""):
-    if status == 404:
-        if not message:
-            message = "Data not found."
-        context = {
-            "status": status,
-            "message": message,
-            "data": data    
-        }
-    elif status == 400 or status == 202:
-        error_list = list()
-        if isinstance(data, str):
-            message = data
-            context = {
-                "status": status,
-                "message": message,
-                "data": []
-            }
-        else:
-            for i, j in data.items():
-                j = "".join(j)
-                message = f"{i}: {j}"
-                error_list.append(message)
-
-            context = {
-                "status": status,
-                "message": ", ".join(error_list),
-                "data": []
-            }
-    elif status == 409:
-        context = {
-            "status": status,
-            "message": "Already exists",
-            "data": []
-        }
-    else:
-        context = {
-            "status": status,
-            "message": message,
-            "data": data
-        }
-    return context
-
-
 def custom_post(request):
-    token = generate_token("dev@example.com", "testdevex")
-    # aa='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU5Njk1NDIxLCJpYXQiOjE2NTk2OTQ1MjEsImp0aSI6IjBhNDY4YzMzNjI5YzQzN2ZhYjE5M2U2YmYxOTc3ZTFhIiwidXNlcl9pZCI6Mn0.NZGJ5EAE0OWdo9MHxld2HoP9rtOxWniHFJJVhun--j0'
-    # hed = {'Authorization': 'Bearer ' + aa}
+    token = generate_token(USERNAME, PASSWORD)
     hed = {"Authorization": f"Bearer {token.get('access')}"}
     api1 = "http://51.159.178.154:5002/v1/customs_info"
     data = {
@@ -75,7 +28,6 @@ def custom_post(request):
             "value_amount": 0,
             "value_currency": "str",
             "origin_country": "str",
-            
             "metadata": {}
             }
         ],
