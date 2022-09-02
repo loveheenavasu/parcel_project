@@ -22,7 +22,7 @@ def custom_post(request):
             {
             "weight": 0,
             "weight_unit": "KG",
-            "description": "string",
+            "description": "string",    
             "quantity": 1,
             "sku": "string",
             "value_amount": 0,

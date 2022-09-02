@@ -16,7 +16,7 @@
               <div class="">
                   <label for="first-name" class="block text-sm font-medium text-gray-700">First name</label>
                 <div class="mt-1">
-                  <input  type="text" id="" value="{{values.first_name}}" name="Firstname" autocomplete="given-name" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-800 focus:border-pink-800 sm:text-sm">
+                  <input  type="text" id="" required value="{{values.first_name}}" name="Firstname" autocomplete="given-name" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-800 focus:border-pink-800 sm:text-sm">
                 </div>
                 {% if error.first_name %}
                   <div class="alert alert-danger" role="alert" style="color:red;">

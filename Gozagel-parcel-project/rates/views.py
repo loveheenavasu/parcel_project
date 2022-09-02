@@ -2,6 +2,7 @@ import requests
 import json
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
+from core.views import generate_token, API_BASE_URL, PARCEL_ENDPOINT, USERNAME, PASSWORD, custom_response
 
 
 no_postal_countries = [
@@ -78,6 +79,9 @@ class QuoteLogInView(TemplateView):
 
 class QuoteView(View):
     def get(self, request):
+        token = generate_token(USERNAME, PASSWORD)
+        hed = {"Authorization": f"Bearer {token.get('access')}"}
+        api = f"{API_BASE_URL}{PARCEL_ENDPOINT}"
         print(request.GET["country-from"])
         weight = int(request.GET["weight"])
         width = int(request.GET["width"])
@@ -123,45 +127,42 @@ class QuoteView(View):
             "postal_code_to": postal_code_to,
         }
         body = {
+            "options": {},
             "parcels": [
                 {
-                    "weight": weight,
-                    "weight_unit": "KG",
-                    "width": width,
-                    "height": height,
-                    "length": length,
-                    "is_document": "false",
-                    "dimension_unit": "CM",
+                "dimension_unit": "CM",
+                "height": 2,
+                "is_document": "false",
+                "length": 2,
+                "weight": 2,
+                "weight_unit": "KG",
+                "width": 2
                 }
             ],
             "recipient": {
-                "country_code": country_to,
-                "postal_code": postal_code_to,
-                "city": city_to,
-                "residential": "true",
+                "city": "Paris",
+                "country_code": "FR",
+                "postal_code": "75001",
+                "residential": "true"
             },
             "shipper": {
-                "country_code": country_from,
-                "postal_code": postal_code_from,
-                "city": city_from,
-                "residential": "true",
-            },
-            "services": [],
-            "options": {},
-            "references": None,
-            "carrier_ids": [],
-        }
+                "city": "cairo",
+                "country_code": "EG",
+                "residential": "true"
+            }
+            }
         data = body
-        url = "http://163.172.155.26:5002"
+        url = "http://51.159.178.154:5002/v1"
         headers = {
             "Authorization": "Token key_d314031424e44537096092aad60dbb6f",
             "Content_type": "application/json",
         }
+    
         response = requests.post(
-            f"{ url }/v1/proxy/rates?test=false", headers=headers, json=data
+            f"{ url }/proxy/rates", headers=hed, json=data
         )
         r = response.json()
-
+        print(r)
         no_rates = False
         try:
             rates = [

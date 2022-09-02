@@ -1,22 +1,16 @@
+
 import os
 import re
-import sqlite3
 import requests
 from users.models import Contacts
-from django.core import serializers
-
-import folium
-import geocoder
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic import ListView, TemplateView, View
 import stripe
 import json
-from .models import Search
-from .forms import SearchForm
+from .serializers import CustomerSerializer
 from orders.models import Customer
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
 stripe.api_key = "sk_test_51IdCfjHw4HZ2kCHRfhsYcX1NvBXuPGWbRoByMri1jXBtN9whbndpxz2yN0IuDhhZE1xqqwp8yQ3P7YPn7HD5tnLa007K98cNaM"
@@ -150,7 +144,8 @@ class CheckoutView(TemplateView):
                             recipient_postal_code=recipient_postal_code, recipient_phone=recipient_phone
                             )
         customer.save()
-        error_message = self.validateCustomer(customer)
+        error_message = self.validateCustomer(Customer)
+        CustomerSerializer(data=request)
         if not error_message:
             """post request to stripe to validate order"""
             total = float(request.session["final_not_insured"])
@@ -158,10 +153,11 @@ class CheckoutView(TemplateView):
             name = f"Parcel from {request.session['parcel']['from']} {request.session['parcel']['to']}"
             try:
                 checkout_session = stripe.checkout.Session.create(
-                    customer_email=email,
+                    customer_email=request.email,
                     submit_type="pay",
                     line_items=[
                         {
+
                             "price_data": {
                                 "currency": "EUR",
                                 "product_data": {"name": name},
@@ -336,7 +332,6 @@ class CheckoutView(TemplateView):
 
         if not customer.recipient_city:
             error_message['recipient_city'] = ' Recipient city is Required'
-       
         elif len(customer.recipient_city) > 45:
             error_message['recipient_city'] = 'Recipient city  Minimum 45 Char'
 
@@ -354,7 +349,6 @@ class CheckoutView(TemplateView):
 
         if not customer.recipient_postal_code:
             error_message['recipient_postal_code'] = ' Recipient postal code is Required'
-       
         elif len(customer.recipient_postal_code) > 12:
             error_message['recipient_postal_code'] = 'Recipient Postal code  Minimum 12 Char'
 
@@ -370,21 +364,21 @@ class SuccessView(TemplateView):
     def get(self, request, **kwargs):
 
         data = Customer.objects.last()
-        data = data.__dict__
-        html_body = render_to_string("orders/order_form_show_data.html", {'data': data})
-        data['web_type'] = 'html'
-        message = EmailMultiAlternatives(
-            "Payment Data",
-            html_body,
-            'santosh.zestgeek@gmail.com',
-            [data['email']],
-        )
-        message.attach_alternative(html_body, "text/html")
-        message.send()
-        if message:
-            print("Mail Sent")
-        else:
-            print("Mail Not Sent")
+        # data = data.__dict__
+        # html_body = render_to_string("orders/order_form_show_data.html", {'data': data})
+        # data['web_type'] = 'html'
+        # message = EmailMultiAlternatives(
+        #     "Payment Data",
+        #     html_body,
+        #     'santosh.zestgeek@gmail.com',
+        #     [data['email']],
+        # )
+        # message.attach_alternative(html_body, "text/html")
+        # message.send()
+        # if message:
+        #     print("Mail Sent")
+        # else:
+        #     print("Mail Not Sent")
         return render(request, "orders/order_form_show_data.html", {'data': data})
 
 
@@ -419,7 +413,6 @@ class WebhookView(View):
         else:
             print("Unhandled event type {}".format(event.type))
         print("striped")
-
         return HttpResponse(status=200)
 
 
